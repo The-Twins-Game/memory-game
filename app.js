@@ -1,30 +1,76 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // list all card options
-  const cardArray = [
-    { name: "fries", img: "images/factoriacard-Photoroom.jpg" },
-    { name: "cheeseburger", img: "images/factoriacard-Photoroom.jpg" },
-    { name: "ice-cream", img: "images/factoriacard-Photoroom.jpg" },
-    { name: "pizza", img: "images/factoriacard-Photoroom.jpg" },
-    { name: "milkshake", img: "images/factoriacard-Photoroom.jpg" },
-    { name: "hotdog", img: "images/factoriacard-Photoroom.jpg" },
-    { name: "fries", img: "images/factoriacard-Photoroom.jpg" },
-    { name: "cheeseburger", img: "images/factoriacard-Photoroom.jpg" },
-    { name: "ice-cream", img: "images/factoriacard-Photoroom.jpg" },
-    { name: "pizza", img: "images/factoriacard-Photoroom.jpg" },
-    { name: "milkshake", img: "images/factoriacard-Photoroom.jpg" },
-    { name: "hotdog", img: "images/factoriacard-Photoroom.jpg" },
-  ];
+  let currentLevel = 1;
+  let lives = 5; // Inicializamos el juego con 5 vidas.
 
-  cardArray.sort(() => 0.5 - Math.random());
+  const levels = {
+    1: [
+      { name: "fries", img: "./images/uva.png" },
+      { name: "cheeseburger", img: "./images/naranja.png​" },
+      { name: "ice-cream", img: "./images/repollo.png​" },
+      { name: "pizza", img: "./​​images/manzana.png​" },
+      { name: "milkshake", img: "./​​​images/pera.png​" },
+      { name: "hotdog", img: "./images/manzana.png​" },
+      { name: "fries", img: "./​​​images/naranja.png​" },
+      { name: "cheeseburger", img: "./​images/pera.png​" },
+      { name: "ice-cream", img: "./images/uva.png​" },
+      { name: "pizza", img: "./​​​images/pizza.png​" },
+      { name: "milkshake", img: "./​images/repollo.png​" },
+      { name: "hotdog", img: "​​./images/pizza.png​" },
+    ],
+    2: [
+      { name: "fries", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "cheeseburger", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "ice-cream", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "pizza", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "milkshake", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "hotdog", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "fries", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "cheeseburger", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "ice-cream", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "pizza", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "milkshake", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "hotdog", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "bacon", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "salad", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "bacon", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "salad", img: "images/factoriacard-Photoroom.jpg" },
+    ],
+    3: [
+      { name: "fries", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "cheeseburger", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "ice-cream", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "pizza", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "milkshake", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "hotdog", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "fries", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "cheeseburger", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "ice-cream", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "pizza", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "milkshake", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "hotdog", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "bacon", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "salad", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "bacon", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "salad", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "sushi", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "steak", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "sushi", img: "images/factoriacard-Photoroom.jpg" },
+      { name: "steak", img: "images/factoriacard-Photoroom.jpg" },
+    ],
+  };
 
-  const grid = document.querySelector(".grid");
-  const resultDisplay = document.querySelector("#result");
+  let cardArray = levels[currentLevel];
   let cardsChosen = [];
   let cardsChosenId = [];
   let cardsWon = [];
 
+  const grid = document.querySelector(".grid");
+  const resultDisplay = document.querySelector("#result");
+
   // create your board
   function createBoard() {
+    cardArray.sort(() => 0.5 - Math.random());
+    grid.innerHTML = "";
     for (let i = 0; i < cardArray.length; i++) {
       const card = document.createElement("div");
       card.classList.add("card");
@@ -38,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
       card.addEventListener("click", flipCard);
       grid.appendChild(card);
     }
+    resultDisplay.textContent = `Lives: ${lives}`; // Muestra las vidas restantes.
   }
 
   // check for matches
@@ -53,12 +100,28 @@ document.addEventListener("DOMContentLoaded", () => {
       cards[optionOneId].classList.remove("is-flipped");
       cards[optionTwoId].classList.remove("is-flipped");
       alert("Sorry, try again");
+      lives--; // Resta una vida.
+      if (lives === 0) {
+        alert("Game Over! You've lost all your lives.");
+        resultDisplay.textContent = "Game Over!";
+        return; // Termina el juego si se pierden todas las vidas.
+      }
     }
     cardsChosen = [];
     cardsChosenId = [];
-    resultDisplay.textContent = cardsWon.length;
+    resultDisplay.textContent = `Lives: ${lives}`;
+
     if (cardsWon.length === cardArray.length / 2) {
-      resultDisplay.textContent = "Congratulations! You found them all!";
+      if (currentLevel < 3) {
+        alert("Level complete! Moving to the next level.");
+        currentLevel++;
+        cardArray = levels[currentLevel];
+        cardsWon = [];
+        createBoard();
+      } else {
+        resultDisplay.textContent =
+          "Congratulations! You completed all levels!";
+      }
     }
   }
 
