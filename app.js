@@ -4,11 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const levels = {
     1: [
-      { name: "fries", img: "./images/uva.png" },
-      { name: "cheeseburger", img: "./images/naranja.png​" },
-      { name: "ice-cream", img: "./images/repollo.png​" },
-      { name: "pizza", img: "./​​images/manzana.png​" },
-      { name: "milkshake", img: "./​​​images/pera.png​" },
+      { name: "gokuUL", img: "./images/CardImg/gokuUL.jpg" },
+      { name: "FreezerER", img: "./images/CardImg/FreezER.jpg​" },
+      { name: "veguetaEGO", img: "./images/CardImg/veguetEGO.jpg" },
+      { name: "Cell", img: "./images/CardImg/Cell1.jpg"},
+      { name: "Broly", img: "./images/CardImg/BrolySJ.png" },
       { name: "hotdog", img: "./images/manzana.png​" },
       { name: "fries", img: "./​​​images/naranja.png​" },
       { name: "cheeseburger", img: "./​images/pera.png​" },
