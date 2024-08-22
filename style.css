@@ -4,17 +4,7 @@
   width: 800px;
   height: 500px;
 }
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 700px;
-}
-/* styles.css */
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-}
+
 
 .grid .card {
   width: 160px;
@@ -46,4 +36,36 @@ body {
 
 .grid .card-back {
   transform: rotateY(180deg);
+}
+header {
+  background-color: black;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  align-items: center;
+  opacity: 0.5;
+}
+h1 {
+  margin-left: 10px;
+  font-family: "Bungee Inline", sans-serif;
+  font-style: normal;
+}
+#console {
+  margin-left: 10px;
+}
+body {
+  background-image: url("./images/BackgroundConsole.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+p{
+  color: white;
+  font-family: "Bungee Inline", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 25px;
+}
+footer{
+  background-color: black;
+  opacity: 0.2;
 }
