@@ -1,155 +1,113 @@
 document.addEventListener("DOMContentLoaded", () => {
-  let currentLevel = 1;
-  let lives = 5; // Inicializamos el juego con 5 vidas.
-  let score = 0; // Inicializamos el puntaje en 0.
+  let vidas = 5; // Vidas del jugador.
+  let puntuacion = 0; // Puntos del jugador.
 
-  const levels = {
-    1: [
-      { name: "gokuUL", img: "./images/CardImg/gokuUL.jpg" },
-      { name: "FreezerER", img: "./images/CardImg/FreezER.jpg" },
-      { name: "veguetaEGO", img: "./images/CardImg/veguetEGO.jpg" },
-      { name: "Cell", img: "./images/CardImg/Cell1.jpg" },
-      { name: "Broly", img: "./images/CardImg/BrolySJ.png" },
-      { name: "picolo", img: "./images/CardImg/piccolo.jpg" },
-      { name: "gokuUL", img: "./images/CardImg/gokuUL.jpg" },
-      { name: "FreezerER", img: "./images/CardImg/FreezER.jpg" },
-      { name: "veguetaEGO", img: "./images/CardImg/veguetEGO.jpg" },
-      { name: "Cell", img: "./images/CardImg/Cell1.jpg" },
-      { name: "Broly", img: "./images/CardImg/BrolySJ.png" },
-      { name: "picolo", img: "./images/CardImg/piccolo.jpg" },
-    ],
-    2: [
-      { name: "gokuUL", img: "./images/CardImg/gokuUL.jpg" },
-      { name: "FreezerER", img: "./images/CardImg/FreezER.jpg" },
-      { name: "veguetaEGO", img: "./images/CardImg/veguetEGO.jpg" },
-      { name: "Cell", img: "./images/CardImg/Cell1.jpg" },
-      { name: "Broly", img: "./images/CardImg/BrolySJ.png" },
-      { name: "picolo", img: "./images/CardImg/piccolo.jpg" },
-      { name: "gokuUL", img: "./images/CardImg/gokuUL.jpg" },
-      { name: "FreezerER", img: "./images/CardImg/FreezER.jpg" },
-      { name: "veguetaEGO", img: "./images/CardImg/veguetEGO.jpg" },
-      { name: "Cell", img: "./images/CardImg/Cell1.jpg" },
-      { name: "Broly", img: "./images/CardImg/BrolySJ.png" },
-      { name: "picolo", img: "./images/CardImg/piccolo.jpg" },
-    ],
-    3: [
-      { name: "gokuUL", img: "./images/CardImg/gokuUL.jpg" },
-      { name: "FreezerER", img: "./images/CardImg/FreezER.jpg" },
-      { name: "veguetaEGO", img: "./images/CardImg/veguetEGO.jpg" },
-      { name: "Cell", img: "./images/CardImg/Cell1.jpg" },
-      { name: "Broly", img: "./images/CardImg/BrolySJ.png" },
-      { name: "picolo", img: "./images/CardImg/piccolo.jpg" },
-      { name: "gokuUL", img: "./images/CardImg/gokuUL.jpg" },
-      { name: "FreezerER", img: "./images/CardImg/FreezER.jpg" },
-      { name: "veguetaEGO", img: "./images/CardImg/veguetEGO.jpg" },
-      { name: "Cell", img: "./images/CardImg/Cell1.jpg" },
-      { name: "Broly", img: "./images/CardImg/BrolySJ.png" },
-      { name: "picolo", img: "./images/CardImg/piccolo.jpg" },
-    ],
-  };
+  // Arreglo de cartas, cada una con su nombre e imagen.
+  const cartas = [
+    { nombre: "Goku", imagen: "./images/CardImg/gokuUL.jpg" },
+    { nombre: "Freezer", imagen: "./images/CardImg/FreezER.jpg" },
+    { nombre: "Vegeta", imagen: "./images/CardImg/veguetEGO.jpg" },
+    { nombre: "Cell", imagen: "./images/CardImg/Cell1.jpg" },
+    { nombre: "Broly", imagen: "./images/CardImg/BrolySJ.png" },
+    { nombre: "Piccolo", imagen: "./images/CardImg/piccolo.jpg" },
+    { nombre: "Goku", imagen: "./images/CardImg/gokuUL.jpg" },
+    { nombre: "Freezer", imagen: "./images/CardImg/FreezER.jpg" },
+    { nombre: "Vegeta", imagen: "./images/CardImg/veguetEGO.jpg" },
+    { nombre: "Cell", imagen: "./images/CardImg/Cell1.jpg" },
+    { nombre: "Broly", imagen: "./images/CardImg/BrolySJ.png" },
+    { nombre: "Piccolo", imagen: "./images/CardImg/piccolo.jpg" },
+  ];
 
-  let cardArray = levels[currentLevel];
-  let cardsChosen = [];
-  let cardsChosenId = [];
-  let cardsWon = [];
+  let cartasElegidas = []; // Cartas que el jugador ha seleccionado.
+  let idsElegidos = []; // IDs de las cartas seleccionadas.
+  let cartasGanadas = []; // Cartas que el jugador ha acertado.
 
-  const grid = document.querySelector(".grid");
-  const resultDisplay = document.querySelector("#result"); // Elemento para mostrar las vidas.
-  const scoreDisplay = document.querySelector("#score"); // Elemento para mostrar el puntaje.
+  const tablero = document.querySelector(".grid");
+  const mostrarVidas = document.querySelector("#result");
+  const mostrarPuntuacion = document.querySelector("#score");
 
-  // Función para actualizar la visualización de las vidas con corazones
-  function updateLivesDisplay() {
-    resultDisplay.textContent = "❤️".repeat(lives); // Muestra corazones según la cantidad de vidas
+  // Actualiza la visualización de las vidas.
+  function actualizarVidas() {
+    mostrarVidas.textContent = "❤️".repeat(vidas);
   }
 
-  // Crea el tablero de juego
-  function createBoard() {
-    cardArray.sort(() => 0.5 - Math.random());
-    grid.innerHTML = "";
-    for (let i = 0; i < cardArray.length; i++) {
-      const card = document.createElement("div");
-      card.classList.add("card");
-      card.setAttribute("data-id", i);
-      card.innerHTML = `
+  // Crea el tablero mezclando las cartas y añadiéndolas al DOM.
+  function crearTablero() {
+    cartas.sort(() => 0.5 - Math.random()); // Mezcla las cartas.
+    tablero.innerHTML = ""; // Limpia el tablero.
+    cartas.forEach((_, index) => {
+      const carta = document.createElement("div");
+      carta.classList.add("card");
+      carta.setAttribute("data-id", index);
+      carta.innerHTML = `
         <div class="card-inner">
           <div class="card-front"><img src="images/factoriacard.png" alt="Card"></div>
-          <div class="card-back"><img src="${cardArray[i].img}" alt="Card"></div>
+          <div class="card-back"><img src="${cartas[index].imagen}" alt="Card"></div>
         </div>
       `;
-      card.addEventListener("click", flipCard);
-      grid.appendChild(card);
-    }
-    updateLivesDisplay(); // Muestra las vidas restantes como corazones
-    scoreDisplay.textContent = score; // Muestra el puntaje
+      carta.addEventListener("click", voltearCarta); // Agrega el evento de clic.
+      tablero.appendChild(carta); // Añade la carta al tablero.
+    });
+    actualizarVidas();
+    mostrarPuntuacion.textContent = puntuacion;
   }
 
-  function checkForMatch() {
-    const cards = document.querySelectorAll(".card");
-    const optionOneId = cardsChosenId[0];
-    const optionTwoId = cardsChosenId[1];
+  // Verifica si las cartas seleccionadas son iguales.
+  function verificarCoincidencia() {
+    const todasLasCartas = document.querySelectorAll(".card");
+    const [primeraId, segundaId] = idsElegidos;
 
-    if (cardsChosen[0] === cardsChosen[1]) {
-      alert("You found a match");
-      cardsWon.push(cardsChosen);
-      score += 100; // Sumar 100 puntos por un match
-      scoreDisplay.textContent = score; // Actualiza el puntaje mostrado en pantalla
+    if (cartasElegidas[0] === cartasElegidas[1]) {
+      cartasGanadas.push(cartasElegidas);
+      puntuacion += 100;
+      mostrarPuntuacion.textContent = puntuacion;
     } else {
       setTimeout(() => {
-        cards[optionOneId].classList.remove("is-flipped");
-        cards[optionTwoId].classList.remove("is-flipped");
-        alert("Sorry, try again");
-        lives--; // Resta una vida
-        updateLivesDisplay(); // Actualiza las vidas mostradas en pantalla como corazones
-        if (lives === 0) {
-          alert("Game Over! You've lost all your lives.");
-          resetGame(); // Reinicia el juego
-          return; // Termina el juego si se pierden todas las vidas
+        todasLasCartas[primeraId].classList.remove("is-flipped");
+        todasLasCartas[segundaId].classList.remove("is-flipped");
+        alert("Intenta de nuevo");
+        vidas--;
+        actualizarVidas();
+        if (vidas === 0) {
+          alert("¡Juego terminado! Se han acabado tus vidas.");
+          reiniciarJuego();
         }
       }, 500);
     }
 
-    cardsChosen = [];
-    cardsChosenId = [];
+    // Restablece las cartas elegidas y los IDs después de verificar la coincidencia
+    cartasElegidas = [];
+    idsElegidos = [];
 
-    if (cardsWon.length === cardArray.length / 2) {
-      if (currentLevel < 3) {
-        alert("Level complete! Moving to the next level.");
-        currentLevel++;
-        resetLevel(); // Reinicia las vidas y crea el tablero para el nuevo nivel
-      } else {
-        resultDisplay.textContent =
-          "Congratulations! You completed all levels!";
-      }
+    // Comprueba si el jugador ha ganado después de actualizar las variables
+    if (cartasGanadas.length === cartas.length / 2) {
+      setTimeout(() => {
+        alert("¡Felicidades! Completaste el juego.");
+        reiniciarJuego(); // Reinicia el juego después de ganar
+      }, 500); // Usa setTimeout para dar tiempo a la última carta de voltearse antes de mostrar el mensaje de victoria
     }
   }
 
-  // Función para voltear la carta
-  function flipCard() {
-    let cardId = this.getAttribute("data-id");
-    if (!cardsChosenId.includes(cardId)) {
-      cardsChosen.push(cardArray[cardId].name);
-      cardsChosenId.push(cardId);
+  // Maneja el volteo de la carta.
+  function voltearCarta() {
+    const idCarta = this.getAttribute("data-id");
+    if (!idsElegidos.includes(idCarta)) {
+      cartasElegidas.push(cartas[idCarta].nombre);
+      idsElegidos.push(idCarta);
       this.classList.add("is-flipped");
-      if (cardsChosen.length === 2) {
-        setTimeout(checkForMatch, 500);
+      if (cartasElegidas.length === 2) {
+        setTimeout(verificarCoincidencia, 500);
       }
     }
   }
 
-  // Función para reiniciar el nivel
-  function resetLevel() {
-    lives = 5; // Restablece las vidas
-    score = 0; // Restablece el puntaje
-    cardsWon = []; // Borra las cartas ganadas
-    cardArray = levels[currentLevel]; // Actualiza el array de cartas según el nivel actual
-    createBoard(); // Crea el tablero para el nuevo nivel
+  // Reinicia el juego desde el principio.
+  function reiniciarJuego() {
+    vidas = 10; // Restablece las vidas a 10
+    puntuacion = 0;
+    cartasGanadas = [];
+    crearTablero();
   }
 
-  // Función para reiniciar el juego
-  function resetGame() {
-    currentLevel = 1;
-    resetLevel(); // Restablece el nivel inicial y las vidas
-  }
-
-  createBoard();
+  crearTablero(); // Inicia el juego al cargar la página.
 });
