@@ -1,22 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
   let currentLevel = 1;
   let lives = 5; // Inicializamos el juego con 5 vidas.
+  let score = 0; // Inicializamos el puntaje en 0.
 
   const levels = {
     1: [
-      { name: "fries", img: "./images/uva.png" },
-      { name: "cheeseburger", img: "./images/naranja.png​" },
-      { name: "ice-cream", img: "./images/repollo.png​" },
-      { name: "pizza", img: "./​​images/manzana.png​" },
-      { name: "milkshake", img: "./​​​images/pera.png​" },
-      { name: "hotdog", img: "./images/manzana.png​" },
-      { name: "fries", img: "./​​​images/naranja.png​" },
-      { name: "cheeseburger", img: "./​images/pera.png​" },
-      { name: "ice-cream", img: "./images/uva.png​" },
-      { name: "pizza", img: "./​​​images/pizza.png​" },
-      { name: "milkshake", img: "./​images/repollo.png​" },
-      { name: "hotdog", img: "​​./images/pizza.png​" },
+      { name: "gokuUL", img: "./images/CardImg/gokuUL.jpg" },
+      { name: "FreezerER", img: "./images/CardImg/FreezER.jpg" },
+      { name: "veguetaEGO", img: "./images/CardImg/veguetEGO.jpg" },
+      { name: "Cell", img: "./images/CardImg/Cell1.jpg" },
+      { name: "Broly", img: "./images/CardImg/BrolySJ.png" },
+      { name: "picolo", img: "./images/CardImg/piccolo.jpg" },
+      { name: "gokuUL", img: "./images/CardImg/gokuUL.jpg" },
+      { name: "FreezerER", img: "./images/CardImg/FreezER.jpg" },
+      { name: "veguetaEGO", img: "./images/CardImg/veguetEGO.jpg" },
+      { name: "Cell", img: "./images/CardImg/Cell1.jpg" },
+      { name: "Broly", img: "./images/CardImg/BrolySJ.png" },
+      { name: "picolo", img: "./images/CardImg/piccolo.jpg" },
     ],
+  
     2: [
       { name: "fries", img: "images/factoriacard-Photoroom.jpg" },
       { name: "cheeseburger", img: "images/factoriacard-Photoroom.jpg" },
@@ -59,15 +61,18 @@ document.addEventListener("DOMContentLoaded", () => {
     ],
   };
 
+
+
   let cardArray = levels[currentLevel];
   let cardsChosen = [];
   let cardsChosenId = [];
   let cardsWon = [];
 
   const grid = document.querySelector(".grid");
-  const resultDisplay = document.querySelector("#result");
+  const resultDisplay = document.querySelector("#result"); // Elemento para mostrar las vidas.
+  const scoreDisplay = document.querySelector("#score");   // Elemento para mostrar el puntaje.
 
-  // create your board
+  // Crea el tablero de juego
   function createBoard() {
     cardArray.sort(() => 0.5 - Math.random());
     grid.innerHTML = "";
@@ -84,33 +89,38 @@ document.addEventListener("DOMContentLoaded", () => {
       card.addEventListener("click", flipCard);
       grid.appendChild(card);
     }
-    resultDisplay.textContent = `Lives: ${lives}`; // Muestra las vidas restantes.
+    resultDisplay.textContent = lives;  // Muestra las vidas restantes.
+    scoreDisplay.textContent = score;   // Muestra el puntaje.
   }
 
-  // check for matches
   function checkForMatch() {
     const cards = document.querySelectorAll(".card");
     const optionOneId = cardsChosenId[0];
     const optionTwoId = cardsChosenId[1];
-
+  
     if (cardsChosen[0] === cardsChosen[1]) {
       alert("You found a match");
       cardsWon.push(cardsChosen);
+      score += 100; // Sumar 100 puntos por un match.
+      scoreDisplay.textContent = score; // Actualiza el puntaje mostrado en pantalla.
     } else {
-      cards[optionOneId].classList.remove("is-flipped");
-      cards[optionTwoId].classList.remove("is-flipped");
-      alert("Sorry, try again");
-      lives--; // Resta una vida.
-      if (lives === 0) {
-        alert("Game Over! You've lost all your lives.");
-        resultDisplay.textContent = "Game Over!";
-        return; // Termina el juego si se pierden todas las vidas.
-      }
+      setTimeout(() => {
+        cards[optionOneId].classList.remove("is-flipped");
+        cards[optionTwoId].classList.remove("is-flipped");
+        alert("Sorry, try again");
+        lives--; // Resta una vida.
+        resultDisplay.textContent = lives; // Actualiza las vidas mostradas en pantalla.
+        if (lives === 0) {
+          alert("Game Over! You've lost all your lives.");
+          resetGame(); // Reinicia el juego.
+          return; // Termina el juego si se pierden todas las vidas.
+        }
+      }, 500);
     }
+  
     cardsChosen = [];
     cardsChosenId = [];
-    resultDisplay.textContent = `Lives: ${lives}`;
-
+  
     if (cardsWon.length === cardArray.length / 2) {
       if (currentLevel < 3) {
         alert("Level complete! Moving to the next level.");
@@ -119,13 +129,12 @@ document.addEventListener("DOMContentLoaded", () => {
         cardsWon = [];
         createBoard();
       } else {
-        resultDisplay.textContent =
-          "Congratulations! You completed all levels!";
+        resultDisplay.textContent = "Congratulations! You completed all levels!";
       }
     }
   }
 
-  // flip your card
+  // Función para voltear la carta
   function flipCard() {
     let cardId = this.getAttribute("data-id");
     if (!cardsChosenId.includes(cardId)) {
@@ -136,6 +145,16 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(checkForMatch, 500);
       }
     }
+  }
+
+  // Función para reiniciar el juego
+  function resetGame() {
+    currentLevel = 1;
+    lives = 5;
+    score = 0;
+    cardsWon = [];
+    cardArray = levels[currentLevel];
+    createBoard();
   }
 
   createBoard();
